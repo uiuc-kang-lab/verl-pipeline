@@ -41,7 +41,7 @@ dependencies = [
     "ray>=2.38",
     "tensordict",
     "transformers",
-    "vllm @ https://wheels.vllm.ai/54ed913f3437f9107791e8ea410170b86c968d52/vllm-1.0.0.dev-cp38-abi3-manylinux1_x86_64.whl",
+    "vllm==0.7.3.dev164+g54ed913f",
     "pandas",
     "peft",
     "pyarrow>=15.0.0",
@@ -89,3 +89,10 @@ verl = [
   "version/*",
   "trainer/config/*.yaml"
 ]
+
+[tool.uv.sources]
+vllm = { index = "vllm-nightly" }
+
+[[tool.uv.index]]
+name = "vllm-nightly"
+url = "https://wheels.vllm.ai/54ed913f3437f9107791e8ea410170b86c968d52"
