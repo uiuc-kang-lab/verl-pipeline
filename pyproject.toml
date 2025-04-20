@@ -59,7 +59,7 @@ test = [
   "pytest", "yapf", "py-spy",
 ]
 prime = ["pyext"]
-gpu = ["liger-kernel", "flash-attn"]
+gpu = ["liger-kernel"]
 sglang = ["sglang[all]==0.4.3.post3"]
 
 # URLs
