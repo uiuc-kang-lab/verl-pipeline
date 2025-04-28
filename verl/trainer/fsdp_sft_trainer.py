@@ -493,6 +493,23 @@ class FSDPSFTTrainer(object):
                     self.save_checkpoint(step=global_step)
                     return
 
+                if global_step % self.config.trainer.save_freq == 0:
+                    self.save_checkpoint(step=global_step)
+                
+                if global_step % self.config.trainer.test_freq == 0:
+                    # Perform validation
+                    val_losses = []
+                    for val_data in self.val_dataloader:
+                        val_data = TensorDict(val_data, batch_size=self.config.data.micro_batch_size_per_gpu).cuda()
+                        val_loss = self.validation_step(val_data)
+                        val_losses.append(val_loss)
+                    if rank == 0:
+                        avg_val_loss = torch.mean(torch.stack(val_losses))
+                        metric = {'val/loss': avg_val_loss.detach().item()}
+                        tracking.log(data=metric, step=global_step)
+                    torch.distributed.barrier()
+                    
+
             # validation
             val_losses = []
             for data in self.val_dataloader:
